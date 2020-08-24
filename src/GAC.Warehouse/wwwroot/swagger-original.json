@@ -1,0 +1,363 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Warehouse API",
+    "description" : "Warehouse API",
+    "contact" : {
+      "email" : "you@your-company.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/URSA4/GAC.WareHouse/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  } ],
+  "tags" : [ {
+    "name" : "SalesOrder",
+    "description" : "Secured SalesOrder calls"
+  } ],
+  "paths" : {
+    "/CreateSalesOrder" : {
+      "post" : {
+        "tags" : [ "SalesOrder" ],
+        "summary" : "Create SalesOrder",
+        "operationId" : "create_salesorder",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SalesOrderRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operation succeeded",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SalesOrderResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GetSalesOrder" : {
+      "get" : {
+        "tags" : [ "SalesOrder" ],
+        "summary" : "Get all orderitems for particular order",
+        "operationId" : "get_orderitems",
+        "responses" : {
+          "200" : {
+            "description" : "Operation succeeded",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrderItemsResponse"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "SalesOrderRequest" : {
+        "required" : [ "CustomerID", "OrderItemRequestList" ],
+        "type" : "object",
+        "properties" : {
+          "CustomerID" : {
+            "type" : "integer",
+            "example" : 1002591
+          },
+          "OrderItemRequestList" : {
+            "$ref" : "#/components/schemas/OrderItemRequestList"
+          }
+        }
+      },
+      "SalesOrderResponse" : {
+        "required" : [ "Message", "OrderID" ],
+        "type" : "object",
+        "properties" : {
+          "OrderID" : {
+            "type" : "integer"
+          },
+          "Message" : {
+            "type" : "string"
+          }
+        },
+        "example" : [ {
+          "OrderID" : 121212,
+          "Message" : "Successfull"
+        } ]
+      },
+      "OrderItemsResponse" : {
+        "required" : [ "OrderItemList" ],
+        "type" : "object",
+        "properties" : {
+          "OrderItemList" : {
+            "$ref" : "#/components/schemas/OrderItemList"
+          }
+        },
+        "example" : {
+          "OrderItemList" : {
+            "OrderItems" : [ {
+              "ProductID" : 121212,
+              "Quantity" : 3
+            } ]
+          }
+        }
+      },
+      "OrderItemList" : {
+        "required" : [ "OrderItems" ],
+        "type" : "object",
+        "properties" : {
+          "SalesOrders" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/OrderItem"
+            }
+          }
+        },
+        "example" : {
+          "OrderItems" : [ {
+            "ProductID" : 121212,
+            "Quantity" : 3
+          } ]
+        }
+      },
+      "OrderItemRequestList" : {
+        "required" : [ "OrderItemsRequest" ],
+        "type" : "object",
+        "properties" : {
+          "SalesOrders" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/OrderItemRequest"
+            }
+          }
+        },
+        "example" : {
+          "OrderItemsRequest" : [ {
+            "ProductID" : 121212,
+            "Quantity" : 3
+          } ]
+        }
+      },
+      "OrderItemRequest" : {
+        "required" : [ "ProductID", "Quantity" ],
+        "type" : "object",
+        "properties" : {
+          "ProductID" : {
+            "type" : "integer"
+          },
+          "Quantity" : {
+            "type" : "integer"
+          }
+        },
+        "example" : [ {
+          "ProductID" : 121212,
+          "Quantity" : 3
+        } ]
+      },
+      "OrderItem" : {
+        "required" : [ "ID", "OrderID", "ProductID", "Quantity" ],
+        "type" : "object",
+        "properties" : {
+          "ProductID" : {
+            "type" : "integer"
+          },
+          "Quantity" : {
+            "type" : "integer"
+          }
+        },
+        "example" : [ {
+          "ProductID" : 121212,
+          "Quantity" : 3
+        } ]
+      },
+      "Order" : {
+        "required" : [ "CustomerID", "ID", "OrderDate" ],
+        "type" : "object",
+        "properties" : {
+          "ID" : {
+            "type" : "integer"
+          },
+          "CustomerID" : {
+            "type" : "integer"
+          },
+          "OrderDate" : {
+            "type" : "string"
+          }
+        },
+        "example" : {
+          "ID" : 191484,
+          "CustomerID" : 17185,
+          "OrderDate" : "10-08-2020"
+        }
+      },
+      "Customer" : {
+        "required" : [ "EmailID", "ID", "Name", "PhoneNumber" ],
+        "type" : "object",
+        "properties" : {
+          "ID" : {
+            "type" : "integer"
+          },
+          "Name" : {
+            "type" : "string"
+          },
+          "PhoneNumber" : {
+            "type" : "string"
+          },
+          "EmailID" : {
+            "type" : "string"
+          }
+        },
+        "example" : [ {
+          "ID" : 121212,
+          "Name" : 3,
+          "PhoneNumber" : 1121212121,
+          "EmailID" : "company@company.com"
+        } ]
+      },
+      "Address" : {
+        "required" : [ "City", "Country", "ID", "State", "Street", "VendorID", "ZipCode" ],
+        "type" : "object",
+        "properties" : {
+          "ID" : {
+            "type" : "integer"
+          },
+          "VendorID" : {
+            "type" : "integer"
+          },
+          "Street" : {
+            "type" : "string"
+          },
+          "City" : {
+            "type" : "string"
+          },
+          "State" : {
+            "type" : "string"
+          },
+          "Country" : {
+            "type" : "string"
+          },
+          "ZipCode" : {
+            "type" : "string"
+          }
+        },
+        "example" : [ {
+          "ID" : 12121,
+          "VendorID" : 1212,
+          "Street" : "qwqw",
+          "City" : "qwqw",
+          "State" : "qwqw",
+          "Country" : "qwqw",
+          "ZipCode" : 121
+        } ]
+      },
+      "Product" : {
+        "required" : [ "Code", "Description", "Dimension", "ID", "Name", "VendorID" ],
+        "type" : "object",
+        "properties" : {
+          "ID" : {
+            "type" : "integer"
+          },
+          "Code" : {
+            "type" : "string"
+          },
+          "Name" : {
+            "type" : "string"
+          },
+          "Description" : {
+            "type" : "string"
+          },
+          "Dimension" : {
+            "type" : "string"
+          },
+          "VendorID" : {
+            "type" : "integer"
+          }
+        },
+        "example" : [ {
+          "ID" : 1212,
+          "Code" : "P12",
+          "Name" : "P1",
+          "Description" : "product descripton",
+          "Dimension" : "12*23",
+          "VendorID" : 1
+        } ]
+      },
+      "Vendor" : {
+        "required" : [ "EmailID", "ID", "Name", "PhoneNumber", "Rating" ],
+        "type" : "object",
+        "properties" : {
+          "ID" : {
+            "type" : "integer"
+          },
+          "Name" : {
+            "type" : "string"
+          },
+          "PhoneNumber" : {
+            "type" : "string"
+          },
+          "EmailID" : {
+            "type" : "string"
+          },
+          "Rating" : {
+            "type" : "integer"
+          }
+        },
+        "example" : [ {
+          "ID" : 121212,
+          "Name" : 3,
+          "PhoneNumber" : 1121212121,
+          "EmailID" : "company@company.com",
+          "Rating" : 9
+        } ]
+      },
+      "ErrorResponse" : {
+        "type" : "object",
+        "properties" : {
+          "error" : {
+            "type" : "string",
+            "example" : "Error description"
+          },
+          "ErrorCode" : {
+            "type" : "string",
+            "example" : "404"
+          }
+        }
+      }
+    }
+  }
+}
